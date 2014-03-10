@@ -116,7 +116,7 @@ module Sidekiq
         if @mailer_class.deliver?
           begin
             # Use the ActionMailer delayed extension
-            @mailer_class.delay({queue: queue}).send(@method_name, @args)
+            @mailer_class.delay.send(@method_name, @args)
           rescue Errno::ECONNREFUSED, Redis::CannotConnectError
             logger.error "Unable to connect to Redis; falling back to synchronous mail delivery" if logger
             deliver!
